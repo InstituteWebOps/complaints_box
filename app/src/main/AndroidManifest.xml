@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".NewComplaintActivity">
+        </activity>
+
+        <activity android:name=".CustomComplaintActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -3,4 +3,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="new_complaint">New Complaint</string>
+    <string name="custom_complaint">Custom Complaint</string>
+    <string name="complaint_title">Title</string>
+    <string name="tags">Tags</string>
+    <string name="complaint_description">Description</string>
+    <string name="complaint_proximity">Proximity</string>
+    <string name="templates">Templates</string>
+    <string name="room_number">Near which room?</string>
+    <string name="write_your_own">Write custom complaint</string>
+    <string name="save">Save</string>
+
+    <string name="next">Next</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,7 +15,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
+        fab.setOnClickListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -68,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        Intent intent = new Intent(this, NewComplaintActivity.class);
+        startActivity(intent);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
