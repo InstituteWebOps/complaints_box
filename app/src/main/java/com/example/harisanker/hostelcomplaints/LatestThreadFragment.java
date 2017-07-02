@@ -38,7 +38,8 @@ public class LatestThreadFragment extends Fragment {
                 1,
                 1,
                 true,
-                null));
+                null,
+                1));
         compalintList.add(new Complaints("Cauvery",
                 "Javier",
                 "BLAH",
@@ -52,7 +53,8 @@ public class LatestThreadFragment extends Fragment {
                 1,
                 1,
                 false,
-                null));
+                null,
+                5));
     }
 
     @Override

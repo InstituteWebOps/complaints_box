@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -47,6 +48,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         TextView title = (TextView) holder.view.findViewById(R.id.tv_title);
         TextView subject = (TextView) holder.view.findViewById(R.id.tv_subject);
         TextView description = (TextView) holder.view.findViewById(R.id.tv_description);
+        Button upvote = (Button) holder.view.findViewById(R.id.bn_upvote);
+        Button downvote = (Button)holder.view.findViewById(R.id.bn_downvote);
+        Button comment = (Button)holder.view.findViewById(R.id.bn_comment);
 
 
         name.setText(mDataset.get(position).name);
@@ -55,6 +59,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         title.setText(mDataset.get(position).title);
         subject.setText(mDataset.get(position).subject);
         description.setText(mDataset.get(position).description);
+        upvote.setText("" + mDataset.get(position).upvotes);
+        downvote.setText("" + mDataset.get(position).downvotes);
+        comment.setText("" + mDataset.get(position).comments);
 
 
 

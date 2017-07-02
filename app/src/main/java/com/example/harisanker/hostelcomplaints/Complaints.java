@@ -19,11 +19,12 @@ public class Complaints {
     int type;
     boolean resolved;
     String uid;
+    int comments;
 
     public Complaints() {
     }
 
-    public Complaints(String hostel, String name, String rollNo, String roomNo, String title, String subject, String proximity, String description, String tags, int upvotes, int downvotes, int type, boolean resolved, String uid) {
+    public Complaints(String hostel, String name, String rollNo, String roomNo, String title, String subject, String proximity, String description, String tags, int upvotes, int downvotes, int type, boolean resolved, String uid, int comments) {
         this.hostel = hostel;
         this.name = name;
         this.rollNo = rollNo;
@@ -38,5 +39,6 @@ public class Complaints {
         this.type = type;
         this.resolved = resolved;
         this.uid = uid;
+        this.comments=comments;
     }
 }

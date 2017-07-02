@@ -50,7 +50,8 @@ public class MyComplaintFragment extends Fragment {
                 1,
                 1,
                 true,
-                null));
+                null,
+                1));
         compalintList.add(new Complaints("Cauvery",
                 "Javier",
                 "BLAH",
@@ -64,7 +65,8 @@ public class MyComplaintFragment extends Fragment {
                 1,
                 1,
                 false,
-                null));
+                null,
+                5));
     }
 
     @Override
