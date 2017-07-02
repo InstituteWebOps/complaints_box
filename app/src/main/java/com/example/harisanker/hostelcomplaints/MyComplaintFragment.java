@@ -38,7 +38,7 @@ public class MyComplaintFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         compalintList.add(new Complaints("Godav",
-                "Heisenberg,Walterdfdfdf",
+                "Heisenberg,  ",
                 "BLAH",
                 "Random",
                 "Title",

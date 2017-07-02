@@ -48,9 +48,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         TextView title = (TextView) holder.view.findViewById(R.id.tv_title);
         TextView subject = (TextView) holder.view.findViewById(R.id.tv_subject);
         TextView description = (TextView) holder.view.findViewById(R.id.tv_description);
-        Button upvote = (Button) holder.view.findViewById(R.id.bn_upvote);
-        Button downvote = (Button)holder.view.findViewById(R.id.bn_downvote);
-        Button comment = (Button)holder.view.findViewById(R.id.bn_comment);
+        TextView upvote = (TextView) holder.view.findViewById(R.id.tv_upvote);
+        TextView downvote = (TextView) holder.view.findViewById(R.id.tv_downvote);
+        TextView comment = (TextView) holder.view.findViewById(R.id.tv_comment);
 
 
         name.setText(mDataset.get(position).name);
