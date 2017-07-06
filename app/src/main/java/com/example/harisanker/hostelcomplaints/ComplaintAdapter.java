@@ -4,28 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by harisanker on 22/6/17.
  */
 
 public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.ViewHolder> {
-    private List<Complaints> mDataset;
+    private ArrayList<Complaint> mDataset;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public View view;
-        public ViewHolder(View v) {
-            super(v);
-            view = v;
-        }
-    }
-
-    public ComplaintAdapter(List<Complaints> myDataset) {
+    public ComplaintAdapter(ArrayList<Complaint> myDataset) {
         mDataset = myDataset;
     }
 
@@ -46,26 +37,21 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         TextView hostel = (TextView) holder.view.findViewById(R.id.tv_hostel);
         TextView resolved = (TextView) holder.view.findViewById(R.id.tv_is_resolved);
         TextView title = (TextView) holder.view.findViewById(R.id.tv_title);
-        TextView subject = (TextView) holder.view.findViewById(R.id.tv_subject);
         TextView description = (TextView) holder.view.findViewById(R.id.tv_description);
         TextView upvote = (TextView) holder.view.findViewById(R.id.tv_upvote);
         TextView downvote = (TextView) holder.view.findViewById(R.id.tv_downvote);
         TextView comment = (TextView) holder.view.findViewById(R.id.tv_comment);
 
+        Complaint complaint = mDataset.get(position);
 
-        name.setText(mDataset.get(position).name);
-        hostel.setText(mDataset.get(position).hostel);
-        resolved.setText(mDataset.get(position).resolved?"Resolved":"Unresolved");
-        title.setText(mDataset.get(position).title);
-        subject.setText(mDataset.get(position).subject);
-        description.setText(mDataset.get(position).description);
-        upvote.setText("" + mDataset.get(position).upvotes);
-        downvote.setText("" + mDataset.get(position).downvotes);
-        comment.setText("" + mDataset.get(position).comments);
-
-
-
-
+        name.setText(complaint.getName());
+        hostel.setText(complaint.getHostel());
+        resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
+        title.setText(complaint.getTitle());
+        description.setText(complaint.getDescription());
+        upvote.setText("" + complaint.getUpvotes());
+        downvote.setText("" + complaint.getDownvotes());
+        comment.setText("" + complaint.getComments());
 
 
     }
@@ -74,6 +60,14 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public View view;
+        public ViewHolder(View v) {
+            super(v);
+            view = v;
+        }
     }
 }
 
