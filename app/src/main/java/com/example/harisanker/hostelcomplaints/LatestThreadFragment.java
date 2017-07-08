@@ -25,11 +25,11 @@ import java.util.Map;
 
 
 public class LatestThreadFragment extends Fragment {
-    List <Complaint> compalintList = new ArrayList<>();
+    List <Complaint> complaintList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String url = "dummy.com";
+    private String url = "http://students.iitm.ac.in/studentsapp/complaintbox/hostelcomplaints/getAllComplaints";
     public LatestThreadFragment() {
         // Required empty public constructor
     }
