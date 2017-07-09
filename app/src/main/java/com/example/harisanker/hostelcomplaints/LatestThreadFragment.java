@@ -2,6 +2,7 @@ package com.example.harisanker.hostelcomplaints;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,7 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class LatestThreadFragment extends Fragment {
+public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout swipeLayout;
     List <Complaint> complaintList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -45,6 +47,8 @@ public class LatestThreadFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_latest_thread, container, false);
+        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_latest_thread);
+        swipeLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.general_complaint_recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -63,7 +67,7 @@ public class LatestThreadFragment extends Fragment {
                 //code the ui here
                 mRecyclerView.setLayoutManager(mLayoutManager);
 
-                mAdapter = new ComplaintAdapter(response);
+                mAdapter = new ComplaintAdapter(response, getActivity());
                 mRecyclerView.setAdapter(mAdapter);
 
 
@@ -123,4 +127,9 @@ public class LatestThreadFragment extends Fragment {
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 }
+
+    @Override
+    public void onRefresh() {
+        
+    }
 }

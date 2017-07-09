@@ -64,7 +64,7 @@ public class MyComplaintFragment extends Fragment {
             public void onResponse(ArrayList<Complaint> response) {
                 //code the ui here
                 mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new ComplaintAdapter(response);
+                mAdapter = new ComplaintAdapter(response,getActivity());
                 mRecyclerView.setAdapter(mAdapter);
 
 
