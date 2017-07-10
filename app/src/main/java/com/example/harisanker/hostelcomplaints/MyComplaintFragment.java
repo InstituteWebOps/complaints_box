@@ -1,7 +1,9 @@
 package com.example.harisanker.hostelcomplaints;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,7 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MyComplaintFragment extends Fragment {
+public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout swipeLayout;
     List<Complaint> complaintList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -46,6 +49,8 @@ public class MyComplaintFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_complaint, container, false);
+        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_my_complaint);
+        swipeLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.general_complaint_recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -123,5 +128,25 @@ public class MyComplaintFragment extends Fragment {
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    @Override
+    public void onRefresh() {
+
+        //code here to load new data and setRefreshing to false
+        //Below is only sample code
+        new Thread(){
+            @Override
+            public void run() {
+                SystemClock.sleep(2000); //Refreshing is seen for 2 seconds
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                    }
+                });
+            }
+        }.start();
     }
 }
