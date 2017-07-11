@@ -1,10 +1,12 @@
 package com.example.harisanker.hostelcomplaints;
 
+import java.io.Serializable;
+
 /**
  * Created by harisanker on 22/6/17.
  */
 
-public class Complaint {
+public class Complaint implements Serializable{
     private String hostel;
     private String name;
     private String rollNo;

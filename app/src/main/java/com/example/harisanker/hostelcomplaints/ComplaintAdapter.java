@@ -1,6 +1,7 @@
 package com.example.harisanker.hostelcomplaints;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,9 +61,10 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         TextView comment = (TextView) holder.view.findViewById(R.id.tv_comment);
         Button bn_upvote= (Button)holder.view.findViewById(R.id.bn_upvote);
         Button bn_downvote= (Button)holder.view.findViewById(R.id.bn_downvote);
+        Button bn_comment = (Button)holder.view.findViewById(R.id.bn_comment);
 
 
-        Complaint complaint = mDataset.get(position);
+        final Complaint complaint = mDataset.get(position);
 
         name.setText(complaint.getName());
         hostel.setText(complaint.getHostel());
@@ -172,6 +174,16 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     }
                 };
                 MySingleton.getInstance(activity).addToRequestQueue(request);
+            }
+        });
+
+        bn_comment.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity.getApplicationContext(), Comments.class);
+                intent.putExtra("cardData",complaint);
+                activity.getApplicationContext().startActivity(intent);
             }
         });
 
