@@ -2,10 +2,12 @@ package com.example.harisanker.hostelcomplaints;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +40,7 @@ public class Comments extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
 
         Intent i = getIntent();
-        Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
+        final Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
 
         TextView name = (TextView)findViewById(R.id.comment_tv_name);
         TextView hostel = (TextView)findViewById(R.id.comment_tv_hostel);
@@ -48,6 +50,7 @@ public class Comments extends AppCompatActivity {
         final TextView upvote = (TextView)findViewById(R.id.comment_tv_upvote);
         final TextView downvote = (TextView)findViewById(R.id.comment_tv_downvote);
         TextView comment = (TextView)findViewById(R.id.comment_tv_comment);
+        FloatingActionButton fab_comment = (FloatingActionButton)findViewById(R.id.comment_fab);
 
         name.setText(complaint.getName());
         hostel.setText(complaint.getHostel());
@@ -112,6 +115,15 @@ public class Comments extends AppCompatActivity {
         };
         //volley singleton - ensures single request queue in an app
         MySingleton.getInstance(this).addToRequestQueue(request);
+
+        fab_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Comments.this, AddYourComment.class);
+                intent.putExtra("cardData",complaint);
+                startActivity(intent);
+            }
+        });
 
         //lite
         int MY_SOCKET_TIMEOUT_MS = 5000;

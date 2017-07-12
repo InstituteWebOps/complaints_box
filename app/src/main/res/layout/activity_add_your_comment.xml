@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.harisanker.hostelcomplaints.Comments">
+    tools:context="com.example.harisanker.hostelcomplaints.AddYourComment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -212,26 +212,28 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:inputType="text|textMultiLine"
         android:layout_below="@+id/comment_card"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/rv_comments">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/comment_fab"
+        android:layout_alignLeft="@+id/comment_card"
+        android:layout_alignStart="@+id/comment_card"
+        android:layout_alignRight="@+id/comment_card"
+        android:layout_alignEnd="@+id/comment_card"
+        android:background="@drawable/tv_border"
+        android:text="write your comment here"
+        android:gravity="left"
+        android:padding="10dp"
+        android:id="@+id/editText" />
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="bottom|right|end"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:src="@android:drawable/ic_input_add"
-        android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/comment_card"
-        android:layout_alignEnd="@+id/comment_card" />
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText"
+        android:layout_marginBottom="15dp"
+        android:text="SAVE"
+        android:id="@+id/bn_save"/>
 
 </RelativeLayout>
