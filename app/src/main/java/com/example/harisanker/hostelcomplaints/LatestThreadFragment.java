@@ -32,7 +32,7 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String url = "http://students.iitm.ac.in/studentsapp/complaintbox/hostelcomplaints/getAllComplaints";
+    private String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/getAllComplaints.php";
     public LatestThreadFragment() {
         // Required empty public constructor
     }

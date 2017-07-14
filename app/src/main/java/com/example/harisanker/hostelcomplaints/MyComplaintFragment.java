@@ -32,7 +32,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String url = "http://students.iitm.ac.in/studentsapp/complaintbox/hostelcomplaints/myComplaints";
+    private String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/myComplaints.php";
     public MyComplaintFragment() {
         // Required empty public constructor
     }

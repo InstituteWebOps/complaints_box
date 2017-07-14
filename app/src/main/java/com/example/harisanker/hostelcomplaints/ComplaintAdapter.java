@@ -81,7 +81,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
             @Override
             public void onClick(View view) {
-                String url = "http://students.iitm.ac.in/studentsapp/complaintbox/hostelcomplaints/vote";
+                String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
                 Request request = new JsonRequest<ArrayList<Complaint>>(Request.Method.POST, url,null, new Response.Listener<ArrayList<Complaint>>() {
                     @Override
                     public void onResponse(ArrayList<Complaint> response) {
@@ -131,7 +131,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
             @Override
             public void onClick(View view) {
-                String url = "http://students.iitm.ac.in/studentsapp/complaintbox/hostelcomplaints/vote";
+                String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
                 Request request = new JsonRequest<ArrayList<Complaint>>(Request.Method.POST, url,null, new Response.Listener<ArrayList<Complaint>>() {
                     @Override
                     public void onResponse(ArrayList<Complaint> response) {
