@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         adapter.addFragment(new LatestThreadFragment(), "Latest thread");
         adapter.addFragment(new MyComplaintFragment(), "My complaints");
         viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override

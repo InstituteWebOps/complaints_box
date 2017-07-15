@@ -1,9 +1,15 @@
 package com.example.harisanker.hostelcomplaints;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.util.JsonReader;
+import android.util.JsonToken;
+import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -12,45 +18,87 @@ import java.util.ArrayList;
 
 public class DataParser {
 
-    private String jsonString;
+    private InputStream stream;
     private ArrayList<Complaint> complaintArray;
 
     public DataParser(String string) {
-        jsonString=string;
+        stream = new ByteArrayInputStream(string.getBytes(Charset.forName("UTF-8")));
+        Log.d("taggi", string);
         complaintArray= new ArrayList<>();
     }
 
-    public ArrayList<Complaint> pleasePleaseParseMyData(){
+    public ArrayList<Complaint> pleasePleaseParseMyData() throws IOException {
+
+        JsonReader reader = null;
         try {
-            JSONArray jsonArray = new JSONArray(jsonString);
-
-            for (int i=0; i<jsonArray.length();i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Complaint complaint = new Complaint();
-                complaint.setName(jsonObject.getString("name"));
-                complaint.setComments(jsonObject.getInt("comments"));
-                complaint.setDescription(jsonObject.getString("description"));
-                complaint.setDownvotes(jsonObject.getInt("downvotes"));
-                complaint.setHostel(jsonObject.getString("hostel"));
-                complaint.setProximity(jsonObject.getString("proximity"));
-                complaint.setResolved(jsonObject.getBoolean("resolved"));
-                complaint.setRollNo(jsonObject.getString("rollno"));
-                complaint.setTag(jsonObject.getString("tag"));
-                complaint.setRoomNo(jsonObject.getString("roomno"));
-                complaint.setUpvotes(jsonObject.getInt("upvotes"));
-                complaint.setUid(jsonObject.getString("uuid"));
-
-                //this will put error as the value is not a string but a datetime
-                // ask me to change the format on the database
-                complaint.setDate(jsonObject.getString("datetime"));
-                complaintArray.add(complaint);
-            }
-
-        } catch (JSONException e) {
+            reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
+            reader.setLenient(true);
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return complaintArray;
+        try {
+            return readComplaintsArray(reader);
+        } finally {
 
+            reader.close();
+
+        }
+
+    }
+
+    public ArrayList<Complaint> readComplaintsArray(JsonReader reader) throws IOException {
+        ArrayList<Complaint> complaints = new ArrayList<>();
+
+        reader.beginArray();
+        while (reader.hasNext()) {
+            complaints.add(readComplaint(reader));
+        }
+        reader.endArray();
+        return complaints;
+
+    }
+
+
+    public Complaint readComplaint(JsonReader reader) throws IOException {
+
+        Complaint complaint = new Complaint();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("name")) {
+                complaint.setName(reader.nextString());
+            } else if (name.equals("rollno")) {
+                complaint.setRollNo(reader.nextString());
+            } else if (name.equals("roomno")) {
+                complaint.setRoomNo(reader.nextString());
+            } else if (name.equals("title")) {
+                complaint.setTitle(reader.nextString());
+            } else if (name.equals("proximity")) {
+                complaint.setProximity(reader.nextString());
+            } else if (name.equals("description")) {
+                complaint.setDescription(reader.nextString());
+            } else if (name.equals("upvotes")) {
+                complaint.setUpvotes(Integer.parseInt(reader.nextString()));
+            } else if (name.equals("downvotes")) {
+                complaint.setDownvotes(Integer.parseInt(reader.nextString()));
+            } else if (name.equals("resolved")) {
+                Boolean resolved = false;
+                if(reader.nextString().equals("1")) resolved=true;
+                complaint.setResolved(resolved);
+            } else if (name.equals("uuid")) {
+                complaint.setUid(reader.nextString());
+            } else if (name.equals("datetime")) {
+                complaint.setDate(reader.nextString());
+            } else if (name.equals("tags") && reader.peek() != JsonToken.NULL) {
+                complaint.setTag(reader.nextString());
+            } else if (name.equals("comments")) {
+                complaint.setComments(Integer.parseInt(reader.nextString()));
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return complaint;
     }
 
 }
