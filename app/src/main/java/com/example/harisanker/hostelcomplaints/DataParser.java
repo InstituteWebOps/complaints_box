@@ -2,7 +2,6 @@ package com.example.harisanker.hostelcomplaints;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,7 +22,6 @@ public class DataParser {
 
     public DataParser(String string) {
         stream = new ByteArrayInputStream(string.getBytes(Charset.forName("UTF-8")));
-        Log.d("taggi", string);
         complaintArray= new ArrayList<>();
     }
 
