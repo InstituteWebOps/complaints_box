@@ -19,7 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,14 +67,25 @@ public class Comments extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
 
-        Request request = new JsonRequest<ArrayList<CommentObj>>(Request.Method.POST, url, null, new Response.Listener<ArrayList<CommentObj>>() {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(ArrayList<CommentObj> response) {
+            public void onResponse(String response) {
+
+                CmntDataParser cmntDataParser = new CmntDataParser(response);
+                ArrayList<CommentObj> commentArray = null;
+                try {
+                    commentArray = cmntDataParser.pleaseParseMyData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(Comments.this, "IOException", Toast.LENGTH_SHORT).show();
+                }
+
                 mRecyclerView.setLayoutManager(mLayoutManager);
 
-                mAdapter = new CommentsAdapter(response);
+                mAdapter = new CommentsAdapter(commentArray);
                 mRecyclerView.setAdapter(mAdapter);
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -81,6 +94,7 @@ public class Comments extends AppCompatActivity {
                 // error.networkResponse.data
 
                 //put error msg
+                Toast.makeText(Comments.this, "not able to load comments", Toast.LENGTH_SHORT).show();
             }
         }) {
             //to POST params
@@ -92,24 +106,6 @@ public class Comments extends AppCompatActivity {
                 params.put("HOSTEL","narmada");
                 params.put("UUID","333545");
                 return params;
-            }
-
-            @Override
-            protected Response parseNetworkResponse(NetworkResponse response) {
-                String jsonString = null;
-                //copy paste this
-                try {
-                    jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-                //parse your data
-               CmntDataParser dataParser = new CmntDataParser(jsonString);
-                ArrayList<CommentObj> commentObjArrayList= dataParser.pleaseParseMyData();
-
-                //copy paste this, change commentObjArrayList
-                return Response.success(commentObjArrayList, HttpHeaderParser.parseCacheHeaders(response));
             }
 
         };

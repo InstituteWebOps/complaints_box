@@ -77,7 +77,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
                     Toast.makeText(getActivity(), "IOException", Toast.LENGTH_SHORT).show();
                 }
                 mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new ComplaintAdapter(complaintArray, getActivity());
+                mAdapter = new ComplaintAdapter(complaintArray, getActivity(),getContext());
                 mRecyclerView.setAdapter(mAdapter);
                 */
 

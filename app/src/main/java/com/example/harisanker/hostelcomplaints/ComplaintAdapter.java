@@ -1,6 +1,7 @@
 package com.example.harisanker.hostelcomplaints;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +33,13 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     private  int mstatus;
     private Activity activity;
     private UUID mUUID;
+    private Context context;
 
 
-    public ComplaintAdapter(ArrayList<Complaint> myDataset , Activity a) {
+    public ComplaintAdapter(ArrayList<Complaint> myDataset , Activity a, Context c) {
         mDataset = myDataset;
         activity = a;
+        context = c;
     }
 
     @Override
@@ -82,9 +86,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
             @Override
             public void onClick(View view) {
                 String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
-                Request request = new JsonRequest<ArrayList<Complaint>>(Request.Method.POST, url,null, new Response.Listener<ArrayList<Complaint>>() {
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(ArrayList<Complaint> response) {
+                    public void onResponse(String response) {
                         switch (mstatus) {
                             case 1:
                                 int currentUpvote = Integer.parseInt(upvote.getText().toString());
@@ -95,6 +99,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                                 break;
                         }
                     }
+
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -113,15 +118,6 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                         params.put("ROLL_NO","ae11d001");
                         return params;
                     }
-
-                    @Override
-                    protected Response<ArrayList<Complaint>> parseNetworkResponse(NetworkResponse response) {
-                        if(response != null){
-                            mstatus = response.statusCode;
-                        }
-                        //return super.parseNetworkResponse(response);
-                        return null;
-                    }
                 };
                 MySingleton.getInstance(activity).addToRequestQueue(request);
             }
@@ -132,9 +128,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
             @Override
             public void onClick(View view) {
                 String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
-                Request request = new JsonRequest<ArrayList<Complaint>>(Request.Method.POST, url,null, new Response.Listener<ArrayList<Complaint>>() {
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(ArrayList<Complaint> response) {
+                    public void onResponse(String response) {
                         switch (mstatus) {
                             case 1:
                                 int currentDownvote = Integer.parseInt(downvote.getText().toString());
@@ -145,6 +141,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                                 break;
                         }
                     }
+
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -164,14 +161,6 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                         return params;
                     }
 
-                    @Override
-                    protected Response<ArrayList<Complaint>> parseNetworkResponse(NetworkResponse response) {
-                        if(response != null){
-                            mstatus = response.statusCode;
-                        }
-                        //return super.parseNetworkResponse(response);
-                        return null;
-                    }
                 };
                 MySingleton.getInstance(activity).addToRequestQueue(request);
             }
@@ -181,9 +170,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity.getApplicationContext(), Comments.class);
+                Intent intent = new Intent(context, Comments.class);
                 intent.putExtra("cardData",complaint);
-                activity.getApplicationContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
 

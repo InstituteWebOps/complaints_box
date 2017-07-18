@@ -26,11 +26,11 @@ public class CommentObj {
     public void setRoomNo(String roomNo) {this.roomNo = roomNo;}
 
     public String getRollNo() {
-        return roomNo;
+        return rollNo;
     }
 
-    public void setRollNo(String roomNo) {
-        this.roomNo = roomNo;
+    public void setRollNo(String rollNo) {
+        this.rollNo = rollNo;
     }
 
     public String getDate() {

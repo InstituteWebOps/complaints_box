@@ -1,9 +1,18 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.util.JsonReader;
+import android.util.JsonToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -11,37 +20,68 @@ import java.util.ArrayList;
  */
 
 public class CmntDataParser {
-    private String jsonString;
+
+    private InputStream stream;
     private ArrayList<CommentObj> commentArray;
 
     public CmntDataParser(String string){
-        jsonString=string;
+        stream = new ByteArrayInputStream(string.getBytes(Charset.forName("UTF-8")));
         commentArray= new ArrayList<>();
     }
 
-    public ArrayList<CommentObj> pleaseParseMyData(){
+    public ArrayList<CommentObj> pleaseParseMyData() throws IOException{
+
+        JsonReader reader = null;
         try {
-            JSONArray jsonArray = new JSONArray(jsonString);
+            reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
+            reader.setLenient(true);
 
-            for (int i=0; i<jsonArray.length();i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                CommentObj commentObj = new CommentObj();
-
-                commentObj.setName(jsonObject.getString("name"));
-                commentObj.setCommentStr(jsonObject.getString("comment"));
-                commentObj.setRollNo(jsonObject.getString("rollno"));
-                commentObj.setRoomNo(jsonObject.getString("roomno"));
-
-                //this will put error as the value is not a string but a datetime
-                // ask me to change the format on the database
-                commentObj.setDate(jsonObject.getString("datetime"));
-                commentArray.add(commentObj);
-            }
-
-        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        try {
+            return readCommentsArray(reader);
+        } finally {
 
-        return commentArray;
+            reader.close();
+
+        }
+
     }
+
+    public ArrayList<CommentObj> readCommentsArray(JsonReader reader) throws IOException {
+        ArrayList<CommentObj> comments = new ArrayList<>();
+
+        reader.beginArray();
+        while (reader.hasNext()) {
+            comments.add(readComment(reader));
+        }
+        reader.endArray();
+        return comments;
+
+    }
+    public CommentObj readComment(JsonReader reader) throws IOException {
+
+        CommentObj commentObj =new CommentObj();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("name")) {
+                commentObj.setName(reader.nextString());
+            } else if (name.equals("rollno")) {
+                commentObj.setRollNo(reader.nextString());
+            } else if (name.equals("roomno")) {
+                commentObj.setRoomNo(reader.nextString());
+            } else if (name.equals("comment")) {
+                commentObj.setCommentStr(reader.nextString());
+            }  else if (name.equals("datetime")) {
+                commentObj.setDate(reader.nextString());
+            }  else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return commentObj;
+    }
+
 }
