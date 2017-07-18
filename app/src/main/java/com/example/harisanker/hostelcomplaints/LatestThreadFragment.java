@@ -94,12 +94,12 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
                 return params;
             }
 
-            @Override
+           /* @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> headers = new HashMap<>();
                 headers.put("Content-Type","application/x-www-form-urlencoded");
                 return headers;
-            }
+            }*/
         };
 
 // Access the RequestQueue through your singleton class.

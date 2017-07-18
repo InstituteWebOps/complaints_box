@@ -32,7 +32,6 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     private ArrayList<Complaint> mDataset;
     private  int mstatus;
     private Activity activity;
-    private UUID mUUID;
     private Context context;
 
 
@@ -79,7 +78,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         downvote.setText(""+complaint.getDownvotes());
         comment.setText(""+complaint.getComments());
 
-        mUUID = UUID.randomUUID();
+        final String mUUID = complaint.getUid();
 
         bn_upvote.setOnClickListener(new View.OnClickListener() {
 
@@ -113,7 +112,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                         //get hostel from prefs
                         //put some dummy for now
                         params.put("HOSTEL","narmada");
-                        params.put("UUID","" + mUUID);
+                        params.put("UUID",mUUID);
                         params.put("VOTE","1");
                         params.put("ROLL_NO","ae11d001");
                         return params;
@@ -155,7 +154,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                         //get hostel from prefs
                         //put some dummy for now
                         params.put("HOSTEL","narmada");
-                        params.put("UUID","1324");
+                        params.put("UUID",mUUID);
                         params.put("VOTE","1");
                         params.put("ROLL_NO","ae11d001");
                         return params;

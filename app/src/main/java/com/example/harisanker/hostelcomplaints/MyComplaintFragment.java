@@ -97,12 +97,12 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
                 return params;
             }
 
-            @Override
+            /*@Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
                 params.put("Content-Type","application/x-www-form-urlencoded");
                 return params;
-            }
+            }*/
         };
 
 // Access the RequestQueue through your singleton class.

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Comments extends AppCompatActivity {
 
@@ -62,6 +63,7 @@ public class Comments extends AppCompatActivity {
         upvote.setText(""+complaint.getUpvotes());
         downvote.setText(""+complaint.getDownvotes());
         comment.setText(""+complaint.getComments());
+        final String mUUID = complaint.getUid();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_comments);
         mRecyclerView.setHasFixedSize(true);
@@ -104,7 +106,7 @@ public class Comments extends AppCompatActivity {
                 //get hostel from prefs
                 //put some dummy for now
                 params.put("HOSTEL","narmada");
-                params.put("UUID","333545");
+                params.put("UUID",mUUID);
                 return params;
             }
 
