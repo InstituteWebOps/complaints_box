@@ -1,7 +1,9 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Context;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,10 +25,12 @@ public class CmntDataParser {
 
     private InputStream stream;
     private ArrayList<CommentObj> commentArray;
+    Context context;
 
-    public CmntDataParser(String string){
+    public CmntDataParser(String string, Context c){
         stream = new ByteArrayInputStream(string.getBytes(Charset.forName("UTF-8")));
         commentArray= new ArrayList<>();
+        context = c;
     }
 
     public ArrayList<CommentObj> pleaseParseMyData() throws IOException{
@@ -76,7 +80,16 @@ public class CmntDataParser {
                 commentObj.setCommentStr(reader.nextString());
             }  else if (name.equals("datetime")) {
                 commentObj.setDate(reader.nextString());
-            }  else {
+            } else if (name.equals("status")){
+                if(reader.nextString() != "1"){
+                    Toast.makeText(context, "Changes are yet to be made in the database", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, "Database updated", Toast.LENGTH_SHORT).show();
+                }
+            } else if (name.equals("error")){
+                Toast.makeText(context, "Error in input", Toast.LENGTH_SHORT).show();
+            }else {
                 reader.skipValue();
             }
         }

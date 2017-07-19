@@ -66,7 +66,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(String response) {
                 //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
-                //DataParser dataParser = new DataParser(response);
+                //DataParser dataParser = new DataParser(response,getContext());
 
                 /*
                 ArrayList<Complaint> complaintArray = null;

@@ -73,7 +73,7 @@ public class Comments extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                CmntDataParser cmntDataParser = new CmntDataParser(response);
+                CmntDataParser cmntDataParser = new CmntDataParser(response,getApplicationContext());
                 ArrayList<CommentObj> commentArray = null;
                 try {
                     commentArray = cmntDataParser.pleaseParseMyData();
