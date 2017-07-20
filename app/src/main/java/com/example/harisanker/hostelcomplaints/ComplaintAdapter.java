@@ -3,7 +3,6 @@ package com.example.harisanker.hostelcomplaints;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +11,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by harisanker on 22/6/17.
@@ -54,14 +50,14 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 //        holder.mTextView.setText(mDataset[position]);
-        TextView name = (TextView) holder.view.findViewById(R.id.tv_name);
-        TextView hostel = (TextView) holder.view.findViewById(R.id.tv_hostel);
-        TextView resolved = (TextView) holder.view.findViewById(R.id.tv_is_resolved);
-        TextView title = (TextView) holder.view.findViewById(R.id.tv_title);
-        TextView description = (TextView) holder.view.findViewById(R.id.tv_description);
-        final TextView upvote = (TextView) holder.view.findViewById(R.id.tv_upvote);
-        final TextView downvote = (TextView) holder.view.findViewById(R.id.tv_downvote);
-        TextView comment = (TextView) holder.view.findViewById(R.id.tv_comment);
+        TextView tv_name = (TextView) holder.view.findViewById(R.id.tv_name);
+        TextView tv_hostel = (TextView) holder.view.findViewById(R.id.tv_hostel);
+        TextView tv_resolved = (TextView) holder.view.findViewById(R.id.tv_is_resolved);
+        TextView tv_title = (TextView) holder.view.findViewById(R.id.tv_title);
+        TextView tv_description = (TextView) holder.view.findViewById(R.id.tv_description);
+        final TextView tv_upvote = (TextView) holder.view.findViewById(R.id.tv_upvote);
+        final TextView tv_downvote = (TextView) holder.view.findViewById(R.id.tv_downvote);
+        TextView tv_comment = (TextView) holder.view.findViewById(R.id.tv_comment);
         Button bn_upvote= (Button)holder.view.findViewById(R.id.bn_upvote);
         Button bn_downvote= (Button)holder.view.findViewById(R.id.bn_downvote);
         Button bn_comment = (Button)holder.view.findViewById(R.id.bn_comment);
@@ -69,14 +65,14 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
         final Complaint complaint = mDataset.get(position);
 
-        name.setText(complaint.getName());
-        hostel.setText(complaint.getHostel());
-        resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
-        title.setText(complaint.getTitle());
-        description.setText(complaint.getDescription());
-        upvote.setText(""+complaint.getUpvotes());
-        downvote.setText(""+complaint.getDownvotes());
-        comment.setText(""+complaint.getComments());
+        tv_name.setText(complaint.getName());
+        tv_hostel.setText(complaint.getHostel());
+        tv_resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
+        tv_title.setText(complaint.getTitle());
+        tv_description.setText(complaint.getDescription());
+        tv_upvote.setText(""+complaint.getUpvotes());
+        tv_downvote.setText(""+complaint.getDownvotes());
+        tv_comment.setText(""+complaint.getComments());
 
         final String mUUID = complaint.getUid();
 
@@ -90,8 +86,8 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     public void onResponse(String response) {
                         switch (mstatus) {
                             case 1:
-                                int currentUpvote = Integer.parseInt(upvote.getText().toString());
-                                upvote.setText("" + (currentUpvote + 1));
+                                int currentUpvote = Integer.parseInt(tv_upvote.getText().toString());
+                                tv_upvote.setText("" + (currentUpvote + 1));
                                 break;
                             case 0:
                                 Toast.makeText(activity, "only 1 upvote allowed per person", Toast.LENGTH_SHORT).show();
@@ -132,8 +128,8 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     public void onResponse(String response) {
                         switch (mstatus) {
                             case 1:
-                                int currentDownvote = Integer.parseInt(downvote.getText().toString());
-                                downvote.setText("" + (currentDownvote + 1));
+                                int currentDownvote = Integer.parseInt(tv_downvote.getText().toString());
+                                tv_downvote.setText("" + (currentDownvote + 1));
                                 break;
                             case 0:
                                 Toast.makeText(activity, "only 1 downvote allowed per person", Toast.LENGTH_SHORT).show();
