@@ -8,6 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class AddYourComment extends AppCompatActivity {
 
@@ -15,6 +25,10 @@ public class AddYourComment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_your_comment);
+
+        final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/newComment.php";
+        final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
+        final String NAME = Utils.getprefString(UtilStrings.NAME, this);
 
         Intent i = getIntent();
         Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
@@ -42,8 +56,36 @@ public class AddYourComment extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cmntDescStr = CmntDesc.getText().toString();
+                final String cmntDescStr = CmntDesc.getText().toString();
                 //write code here to send the comment description to the database, increase the number of comments in database by 1
+                final String mUUID= UUID.randomUUID().toString();
+
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(AddYourComment.this, "sending comment...", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        //params.put("hostel","narmada");
+                        params.put("name",NAME);
+                        params.put("rollno",roll_no);
+                        //params.put("roomno",room_no);
+                        params.put("comment",cmntDescStr);
+                        params.put("uuid",mUUID);
+                        //params.put("datetime","");
+                        return params;
+                    }
+                };
+                MySingleton.getInstance(AddYourComment.this).addToRequestQueue(stringRequest);
             }
         });
     }

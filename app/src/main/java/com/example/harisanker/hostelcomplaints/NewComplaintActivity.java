@@ -8,10 +8,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by dell on 21-06-2017.
@@ -23,7 +33,12 @@ import java.util.List;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_complaint);
 
-        Spinner spinner_complaint_title = (Spinner) findViewById(R.id.spinner_complaint_title);
+        final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/addComplaint.php";
+        final EditText prox = (EditText)findViewById(R.id.editText_room_number);
+        final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
+        final String name = Utils.getprefString(UtilStrings.NAME, this);
+
+        final Spinner spinner_complaint_title = (Spinner) findViewById(R.id.spinner_complaint_title);
         //spinner_complaint_title.setOnItemSelectedListener(this);
         List<String> title = new ArrayList<String>();
         title.add("Washing Machine");
@@ -145,7 +160,49 @@ import java.util.List;
             }
         });
 
+        Button saveNewComplnt = (Button)findViewById(R.id.button_save);
+        saveNewComplnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               final String title = spinner_complaint_title.getSelectedItem().toString();
+                final String description = spinner_complaint_description.getSelectedItem().toString();
+                final String proximity = prox.getText().toString();
+                final String mUUID=UUID.randomUUID().toString();
 
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(NewComplaintActivity.this, "sending complaint...", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        //params.put("hostel","narmada");
+                        params.put("name",name);
+                        params.put("rollno",roll_no);
+                        //params.put("roomno",room_no);
+                        params.put("title",title);
+                        params.put("proximity",proximity);
+                        params.put("description",description);
+                        //params.put("tags","");
+                        params.put("upvotes","0");
+                        params.put("downvotes","0");
+                        params.put ("resolved","0");
+                        params.put("uuid",mUUID);
+                        //params.put("datetime","");
+                        return params;
+                    }
+                };
+                MySingleton.getInstance(NewComplaintActivity.this).addToRequestQueue(stringRequest);
+            }
+        });
 
     }
 
