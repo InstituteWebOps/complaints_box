@@ -1,6 +1,8 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,9 +17,15 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +41,41 @@ import java.util.UUID;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_complaint);
 
+        final SharedPreferences sharedPref = NewComplaintActivity.this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
         final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/addComplaint.php";
+        final String hostel_url = "https://students.iitm.ac.in/studentsapp/studentlist/get_hostel.php";
         final EditText prox = (EditText)findViewById(R.id.editText_room_number);
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         final String name = Utils.getprefString(UtilStrings.NAME, this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, hostel_url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String hostel, room_no, code;
+
+                try {
+                    hostel = response.getString("hostel");
+                    room_no = response.getString("roomno");
+                    code = response.getString("code");
+                    editor.putString("hostel",hostel);
+                    editor.putString("roomno",room_no);
+                    editor.putString("code",code);
+                    editor.commit();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        MySingleton.getInstance(NewComplaintActivity.this).addToRequestQueue(jsonObjectRequest);
+
 
         final Spinner spinner_complaint_title = (Spinner) findViewById(R.id.spinner_complaint_title);
         //spinner_complaint_title.setOnItemSelectedListener(this);
@@ -174,6 +213,7 @@ import java.util.UUID;
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(NewComplaintActivity.this, "sending complaint...", Toast.LENGTH_SHORT).show();
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -184,10 +224,14 @@ import java.util.UUID;
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
-                        //params.put("hostel","narmada");
+                        String hostel_name = sharedPref.getString("hostel","");
+                        String room = sharedPref.getString("roomno","");
+                        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                        params.put("hostel",hostel_name);
                         params.put("name",name);
                         params.put("rollno",roll_no);
-                        //params.put("roomno",room_no);
+                        params.put("roomno",room);
                         params.put("title",title);
                         params.put("proximity",proximity);
                         params.put("description",description);
@@ -196,7 +240,7 @@ import java.util.UUID;
                         params.put("downvotes","0");
                         params.put ("resolved","0");
                         params.put("uuid",mUUID);
-                        //params.put("datetime","");
+                        params.put("datetime",date);
                         return params;
                     }
                 };

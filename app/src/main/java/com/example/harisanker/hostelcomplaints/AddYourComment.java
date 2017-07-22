@@ -1,6 +1,8 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +15,14 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -26,9 +34,40 @@ public class AddYourComment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_your_comment);
 
+        final SharedPreferences sharedPref = AddYourComment.this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
         final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/newComment.php";
+        final String hostel_url = "https://students.iitm.ac.in/studentsapp/studentlist/get_hostel.php";
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         final String NAME = Utils.getprefString(UtilStrings.NAME, this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, hostel_url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String hostel, room_no, code;
+
+                try {
+                    hostel = response.getString("hostel");
+                    room_no = response.getString("roomno");
+                    code = response.getString("code");
+                    editor.putString("hostel",hostel);
+                    editor.putString("roomno",room_no);
+                    editor.putString("code",code);
+                    editor.commit();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        MySingleton.getInstance(AddYourComment.this).addToRequestQueue(jsonObjectRequest);
+
 
         Intent i = getIntent();
         Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
@@ -75,13 +114,17 @@ public class AddYourComment extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
-                        //params.put("hostel","narmada");
+                        String hostel_name = sharedPref.getString("hostel","");
+                        String room = sharedPref.getString("roomno","");
+                        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                        params.put("hostel",hostel_name);
                         params.put("name",NAME);
                         params.put("rollno",roll_no);
-                        //params.put("roomno",room_no);
+                        params.put("roomno",room);
                         params.put("comment",cmntDescStr);
                         params.put("uuid",mUUID);
-                        //params.put("datetime","");
+                        params.put("datetime",date);
                         return params;
                     }
                 };
