@@ -3,11 +3,13 @@ package com.example.harisanker.hostelcomplaints;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +63,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         Button bn_upvote= (Button)holder.view.findViewById(R.id.bn_upvote);
         Button bn_downvote= (Button)holder.view.findViewById(R.id.bn_downvote);
         Button bn_comment = (Button)holder.view.findViewById(R.id.bn_comment);
+        LinearLayout linearLayout =(LinearLayout) holder.view.findViewById(R.id.ll_comment);
 
 
         final Complaint complaint = mDataset.get(position);
@@ -76,100 +79,109 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
         final String mUUID = complaint.getUid();
 
-        bn_upvote.setOnClickListener(new View.OnClickListener() {
+        if(complaint.isResolved()){
+            linearLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.resolved_colour));
+            bn_upvote.setClickable(false);
+            bn_downvote.setClickable(false);
+            bn_comment.setClickable(false);
+        }else {
+            linearLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.unresolved_colour));
 
-            @Override
-            public void onClick(View view) {
-                String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
-                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        switch (mstatus) {
-                            case 1:
-                                int currentUpvote = Integer.parseInt(tv_upvote.getText().toString());
-                                tv_upvote.setText("" + (currentUpvote + 1));
-                                break;
-                            case 0:
-                                Toast.makeText(activity, "only 1 upvote allowed per person", Toast.LENGTH_SHORT).show();
-                                break;
+            bn_upvote.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
+                    StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            switch (mstatus) {
+                                case 1:
+                                    int currentUpvote = Integer.parseInt(tv_upvote.getText().toString());
+                                    tv_upvote.setText("" + (currentUpvote + 1));
+                                    break;
+                                case 0:
+                                    Toast.makeText(activity, "only 1 upvote allowed per person", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
                         }
-                    }
 
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                    }
-                }) {
-                    //to POST params
-                    @Override
-                    protected Map<String,String> getParams(){
-                        Map<String,String> params = new HashMap<String, String>();
-                        //get hostel from prefs
-                        //put some dummy for now
-                        params.put("HOSTEL","narmada");
-                        params.put("UUID",mUUID);
-                        params.put("VOTE","1");
-                        params.put("ROLL_NO","ae11d001");
-                        return params;
-                    }
-                };
-                MySingleton.getInstance(activity).addToRequestQueue(request);
-            }
-        });
-
-        bn_downvote.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
-                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        switch (mstatus) {
-                            case 1:
-                                int currentDownvote = Integer.parseInt(tv_downvote.getText().toString());
-                                tv_downvote.setText("" + (currentDownvote + 1));
-                                break;
-                            case 0:
-                                Toast.makeText(activity, "only 1 downvote allowed per person", Toast.LENGTH_SHORT).show();
-                                break;
                         }
-                    }
+                    }) {
+                        //to POST params
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            //get hostel from prefs
+                            //put some dummy for now
+                            params.put("HOSTEL", "narmada");
+                            params.put("UUID", mUUID);
+                            params.put("VOTE", "1");
+                            params.put("ROLL_NO", "ae11d001");
+                            return params;
+                        }
+                    };
+                    MySingleton.getInstance(activity).addToRequestQueue(request);
+                }
+            });
 
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+            bn_downvote.setOnClickListener(new View.OnClickListener() {
 
-                    }
-                }) {
-                    //to POST params
-                    @Override
-                    protected Map<String,String> getParams(){
-                        Map<String,String> params = new HashMap<String, String>();
-                        //get hostel from prefs
-                        //put some dummy for now
-                        params.put("HOSTEL","narmada");
-                        params.put("UUID",mUUID);
-                        params.put("VOTE","1");
-                        params.put("ROLL_NO","ae11d001");
-                        return params;
-                    }
+                @Override
+                public void onClick(View view) {
+                    String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/vote.php";
+                    StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            switch (mstatus) {
+                                case 1:
+                                    int currentDownvote = Integer.parseInt(tv_downvote.getText().toString());
+                                    tv_downvote.setText("" + (currentDownvote + 1));
+                                    break;
+                                case 0:
+                                    Toast.makeText(activity, "only 1 downvote allowed per person", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
 
-                };
-                MySingleton.getInstance(activity).addToRequestQueue(request);
-            }
-        });
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-        bn_comment.setOnClickListener(new View.OnClickListener(){
+                        }
+                    }) {
+                        //to POST params
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            //get hostel from prefs
+                            //put some dummy for now
+                            params.put("HOSTEL", "narmada");
+                            params.put("UUID", mUUID);
+                            params.put("VOTE", "1");
+                            params.put("ROLL_NO", "ae11d001");
+                            return params;
+                        }
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, Comments.class);
-                intent.putExtra("cardData",complaint);
-                context.startActivity(intent);
-            }
-        });
+                    };
+                    MySingleton.getInstance(activity).addToRequestQueue(request);
+                }
+            });
+
+            bn_comment.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, Comments.class);
+                    intent.putExtra("cardData", complaint);
+                    context.startActivity(intent);
+                }
+            });
+        }
 
 
     }
