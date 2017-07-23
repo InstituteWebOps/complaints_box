@@ -7,7 +7,6 @@ import java.io.Serializable;
  */
 
 public class Complaint implements Serializable{
-    private String hostel;
     private String name;
     private String rollNo;
     private String roomNo;
@@ -21,13 +20,21 @@ public class Complaint implements Serializable{
     private boolean resolved;
     private String uid;
     private int comments;
+    private String hostel;
 
-    public String getHostel() {
-        return hostel;
-    }
-
-    public void setHostel(String hostel) {
-        this.hostel = hostel;
+    public static Complaint getErrorComplaintObject() {
+        Complaint complaint = new Complaint();
+        complaint.setName("Institute MobOps");
+        complaint.setUpvotes(42);
+        complaint.setDownvotes(0);
+        complaint.setComments(0);
+        complaint.setDate("00-00-0000");
+        complaint.setResolved(true);
+        complaint.setHostel("IIT Madras");
+        complaint.setTag("#instimobops");
+        complaint.setTitle("Error getting complaints!");
+        complaint.setDescription("This could be due to:\nNo internet\nno complaints :)\nbut not server error ;)");
+        return complaint;
     }
 
     public String getName() {
@@ -36,10 +43,6 @@ public class Complaint implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getRollNo() {
-        return rollNo;
     }
 
     public void setRollNo(String rollNo) {
@@ -132,5 +135,13 @@ public class Complaint implements Serializable{
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getHostel() {
+        return hostel;
+    }
+
+    private void setHostel(String hostel) {
+        this.hostel = hostel;
     }
 }

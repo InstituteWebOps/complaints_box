@@ -51,7 +51,7 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
         swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_latest_thread);
         swipeLayout.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.general_complaint_recycler);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.latest_thread_recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         getAllComplaints();
@@ -64,14 +64,15 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                DataParser dataParser = new DataParser(response ,getContext());
+                JSONComplaintParser jsonComplaintParser = new JSONComplaintParser(response, getActivity());
                 ArrayList<Complaint> complaintArray = null;
                 try {
-                    complaintArray = dataParser.pleasePleaseParseMyData();
+                    complaintArray = jsonComplaintParser.pleasePleaseParseMyData();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), "IOException", Toast.LENGTH_SHORT).show();
                 }
+
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mAdapter = new ComplaintAdapter(complaintArray, getActivity(),getContext());
                 mRecyclerView.setAdapter(mAdapter);

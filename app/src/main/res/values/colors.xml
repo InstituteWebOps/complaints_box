@@ -5,6 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="circle_color">#000000</color>
     <color name="resolved_colour">#F1F8E9</color>
-    <color name="unresolved_colour">#FFFDE7</color>
+    <color name="unresolved_colour">#FFEBEE</color>
 
 </resources>

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -52,7 +51,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
         swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_my_complaint);
         swipeLayout.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.general_complaint_recycler);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.latest_thread_recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
 
@@ -66,7 +65,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(String response) {
                 //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
-                //DataParser dataParser = new DataParser(response,getContext());
+                //JSONComplaintParser dataParser = new JSONComplaintParser(response,getContext());
 
                 /*
                 ArrayList<Complaint> complaintArray = null;
@@ -93,6 +92,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
                 params.put(KEY_HOSTEL,hostel);
+                //todo
                 params.put("ROLL_NO","me15b123");
                 return params;
             }

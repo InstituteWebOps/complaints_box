@@ -3,12 +3,14 @@ package com.example.harisanker.hostelcomplaints;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,12 +33,14 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     private  int mstatus;
     private Activity activity;
     private Context context;
+    private SharedPreferences sharedPref;
 
 
     public ComplaintAdapter(ArrayList<Complaint> myDataset , Activity a, Context c) {
         mDataset = myDataset;
         activity = a;
         context = c;
+        sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
@@ -63,19 +67,26 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         Button bn_upvote= (Button)holder.view.findViewById(R.id.bn_upvote);
         Button bn_downvote= (Button)holder.view.findViewById(R.id.bn_downvote);
         Button bn_comment = (Button)holder.view.findViewById(R.id.bn_comment);
+        ImageView iv_profile = (ImageView) holder.view.findViewById(R.id.imgProfilePicture);
         LinearLayout linearLayout =(LinearLayout) holder.view.findViewById(R.id.ll_comment);
 
 
         final Complaint complaint = mDataset.get(position);
 
         tv_name.setText(complaint.getName());
-        tv_hostel.setText(complaint.getHostel());
+        //TODO change narmada to IITM
+        tv_hostel.setText(sharedPref.getString("hostel", "Narmada"));
         tv_resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
         tv_title.setText(complaint.getTitle());
         tv_description.setText(complaint.getDescription());
         tv_upvote.setText(""+complaint.getUpvotes());
         tv_downvote.setText(""+complaint.getDownvotes());
         tv_comment.setText(""+complaint.getComments());
+        //todo use glide and get profile picture
+        if (complaint.getName().equals("Institute MobOps")) {
+            iv_profile.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_launcher));
+            tv_hostel.setText(complaint.getHostel());
+        }
 
         final String mUUID = complaint.getUid();
 
@@ -171,17 +182,18 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     MySingleton.getInstance(activity).addToRequestQueue(request);
                 }
             });
-
-            bn_comment.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, Comments.class);
-                    intent.putExtra("cardData", complaint);
-                    context.startActivity(intent);
-                }
-            });
         }
+
+        bn_comment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Comments.class);
+                intent.putExtra("cardData", complaint);
+                activity.startActivity(intent);
+            }
+        });
+
 
 
     }

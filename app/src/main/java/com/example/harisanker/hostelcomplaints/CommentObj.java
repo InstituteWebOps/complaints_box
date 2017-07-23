@@ -11,6 +11,14 @@ public class CommentObj {
     private String commentStr;
     private  String rollNo;
 
+    public static CommentObj getErrorCommentObject() {
+        CommentObj commentObj = new CommentObj();
+        commentObj.setName("Institute MobOps");
+        commentObj.setRoomNo("IIT Madras");
+        commentObj.setCommentStr("No comments :|");
+        return commentObj;
+    }
+
     public String getName() {
         return name;
     }

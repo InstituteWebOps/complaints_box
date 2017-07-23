@@ -86,7 +86,19 @@ public class CustomComplaintActivity extends AppCompatActivity {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(CustomComplaintActivity.this, "sending complaint...", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsObject = new JSONObject(response);
+                            String status = jsObject.getString("status");
+                            if (status.equals("1")) {
+                                finish();
+                            } else if (status.equals("0")) {
+                                Toast.makeText(CustomComplaintActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -97,29 +109,30 @@ public class CustomComplaintActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
-                        String hostel_name = sharedPref.getString("hostel","");
-                        String room = sharedPref.getString("roomno","");
+                        String hostel_name = sharedPref.getString("hostel", "narmada");
+                        String room = sharedPref.getString("roomno", "1004");
                         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-                        params.put("hostel", hostel_name);
-                        params.put("name", name);
-                        params.put("rollno", roll_no);
-                        params.put("roomno", room);
-                        params.put("title", title);
-                        params.put("proximity", "");
-                        params.put("description", description);
-                        params.put("tags", tags);
-                        params.put("upvotes", "0");
-                        params.put("downvotes", "0");
-                        params.put("resolved", "0");
-                        params.put("uuid", mUUID);
-                        params.put("datetime",date);
+                        params.put("HOSTEL", hostel_name);
+                        //TODO get name from prefs
+                        params.put("NAME", "Omkar Patil");
+                        //TODO get rollno from prefs
+                        params.put("ROLL_NO", "me15b123");
+                        params.put("ROOM_NO", room);
+                        params.put("TITLE", title);
+                        params.put("PROXIMITY", "");
+                        params.put("DESCRIPTION", description);
+                        params.put("UPVOTES", "0");
+                        params.put("DOWNVOTES", "0");
+                        params.put("RESOLVED", "0");
+                        params.put("UUID", mUUID);
+                        params.put("TAGS", title);
+                        params.put("DATETIME", date);
+                        params.put("COMMENTS", "0");
                         return params;
                     }
                 };
                 MySingleton.getInstance(CustomComplaintActivity.this).addToRequestQueue(stringRequest);
-
-
             }
         });
 

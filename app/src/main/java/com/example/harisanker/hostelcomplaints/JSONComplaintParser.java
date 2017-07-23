@@ -1,9 +1,8 @@
 package com.example.harisanker.hostelcomplaints;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,16 +16,16 @@ import java.util.ArrayList;
  * Created by DELL on 7/7/2017.
  */
 
-public class DataParser {
+public class JSONComplaintParser {
 
+    Activity activity;
     private InputStream stream;
     private ArrayList<Complaint> complaintArray;
-    Context context;
 
-    public DataParser(String string, Context c) {
+    public JSONComplaintParser(String string, Activity activity) {
         stream = new ByteArrayInputStream(string.getBytes(Charset.forName("UTF-8")));
         complaintArray= new ArrayList<>();
-        context =c;
+        this.activity = activity;
     }
 
     public ArrayList<Complaint> pleasePleaseParseMyData() throws IOException {
@@ -96,14 +95,9 @@ public class DataParser {
             } else if (name.equals("comments")) {
                 complaint.setComments(Integer.parseInt(reader.nextString()));
             } else if (name.equals("status")){
-                if(reader.nextString() != "1"){
-                    Toast.makeText(context, "Changes are yet to be made in the database", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(context, "Database updated", Toast.LENGTH_SHORT).show();
-                }
-            } else if (name.equals("error")){
-                Toast.makeText(context, "Error in input", Toast.LENGTH_SHORT).show();
+                reader.nextString();
+                reader.endObject();
+                return Complaint.getErrorComplaintObject();
             }else {
                 reader.skipValue();
             }

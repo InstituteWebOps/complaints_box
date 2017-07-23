@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
@@ -45,36 +44,9 @@ import java.util.UUID;
         final SharedPreferences.Editor editor = sharedPref.edit();
 
         final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/addComplaint.php";
-        final String hostel_url = "https://students.iitm.ac.in/studentsapp/studentlist/get_hostel.php";
         final EditText prox = (EditText)findViewById(R.id.editText_room_number);
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         final String name = Utils.getprefString(UtilStrings.NAME, this);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, hostel_url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                String hostel, room_no, code;
-
-                try {
-                    hostel = response.getString("hostel");
-                    room_no = response.getString("roomno");
-                    code = response.getString("code");
-                    editor.putString("hostel",hostel);
-                    editor.putString("roomno",room_no);
-                    editor.putString("code",code);
-                    editor.commit();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        MySingleton.getInstance(NewComplaintActivity.this).addToRequestQueue(jsonObjectRequest);
 
 
         final Spinner spinner_complaint_title = (Spinner) findViewById(R.id.spinner_complaint_title);
@@ -212,7 +184,18 @@ import java.util.UUID;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(NewComplaintActivity.this, "sending complaint...", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsObject = new JSONObject(response);
+                            String status = jsObject.getString("status");
+                            if (status.equals("1")) {
+                                finish();
+                            } else if (status.equals("0")) {
+                                Toast.makeText(NewComplaintActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 }, new Response.ErrorListener() {
@@ -224,23 +207,27 @@ import java.util.UUID;
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
-                        String hostel_name = sharedPref.getString("hostel","");
-                        String room = sharedPref.getString("roomno","");
+                        String hostel_name = sharedPref.getString("hostel", "narmada");
+                        String room = sharedPref.getString("roomno", "1004");
                         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-                        params.put("hostel",hostel_name);
-                        params.put("name",name);
-                        params.put("rollno",roll_no);
-                        params.put("roomno",room);
-                        params.put("title",title);
-                        params.put("proximity",proximity);
-                        params.put("description",description);
-                        //params.put("tags","");
-                        params.put("upvotes","0");
-                        params.put("downvotes","0");
-                        params.put ("resolved","0");
-                        params.put("uuid",mUUID);
-                        params.put("datetime",date);
+                        params.put("HOSTEL", hostel_name);
+                        //TODO get name from prefs
+                        params.put("NAME", "Omkar Patil");
+                        //TODO get rollno from prefs
+                        params.put("ROLL_NO", "me15b123");
+                        params.put("ROOM_NO", room);
+                        params.put("TITLE", title);
+                        params.put("PROXIMITY", proximity);
+                        //Todo add proximity to card
+                        params.put("DESCRIPTION", description);
+                        params.put("UPVOTES", "0");
+                        params.put("DOWNVOTES", "0");
+                        params.put("RESOLVED", "0");
+                        params.put("UUID", mUUID);
+                        params.put("TAGS", title);
+                        params.put("DATETIME", date);
+                        params.put("COMMENTS", "0");
                         return params;
                     }
                 };

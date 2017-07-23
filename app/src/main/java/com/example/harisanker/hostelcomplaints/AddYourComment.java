@@ -3,9 +3,8 @@ package com.example.harisanker.hostelcomplaints;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,40 +29,11 @@ public class AddYourComment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_your_comment);
 
-        final SharedPreferences sharedPref = AddYourComment.this.getPreferences(Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPref.edit();
+        final SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
         final String url = "https://students.iitm.ac.in/studentsapp/complaints_portal/hostel_complaints/newComment.php";
-        final String hostel_url = "https://students.iitm.ac.in/studentsapp/studentlist/get_hostel.php";
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         final String NAME = Utils.getprefString(UtilStrings.NAME, this);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, hostel_url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                String hostel, room_no, code;
-
-                try {
-                    hostel = response.getString("hostel");
-                    room_no = response.getString("roomno");
-                    code = response.getString("code");
-                    editor.putString("hostel",hostel);
-                    editor.putString("roomno",room_no);
-                    editor.putString("code",code);
-                    editor.commit();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        MySingleton.getInstance(AddYourComment.this).addToRequestQueue(jsonObjectRequest);
-
 
         Intent i = getIntent();
         Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
@@ -84,7 +50,8 @@ public class AddYourComment extends AppCompatActivity {
         Button save = (Button)findViewById(R.id.bn_save);
 
         name.setText(complaint.getName());
-        hostel.setText(complaint.getHostel());
+        //todo change narmad
+        hostel.setText(sharedPref.getString("hostel", "narmada"));
         resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
         title.setText(complaint.getTitle());
         description.setText(complaint.getDescription());

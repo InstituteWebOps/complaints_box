@@ -5,15 +5,15 @@
     tools:context="com.example.harisanker.hostelcomplaints.MyComplaintFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_my_complaint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_my_complaint">
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/general_complaint_recycler"
-        android:scrollbars="vertical"
+        android:id="@+id/latest_thread_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -1,33 +1,28 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class Comments extends AppCompatActivity {
 
@@ -41,6 +36,7 @@ public class Comments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+        final SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
         Intent i = getIntent();
         final Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
@@ -56,7 +52,7 @@ public class Comments extends AppCompatActivity {
         FloatingActionButton fab_comment = (FloatingActionButton)findViewById(R.id.comment_fab);
 
         name.setText(complaint.getName());
-        hostel.setText(complaint.getHostel());
+        hostel.setText(sharedPref.getString("hostel", "narmada"));
         resolved.setText(complaint.isResolved()?"Resolved":"Unresolved");
         title.setText(complaint.getTitle());
         description.setText(complaint.getDescription());
@@ -114,14 +110,19 @@ public class Comments extends AppCompatActivity {
         //volley singleton - ensures single request queue in an app
         MySingleton.getInstance(this).addToRequestQueue(request);
 
-        fab_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Comments.this, AddYourComment.class);
-                intent.putExtra("cardData",complaint);
-                startActivity(intent);
-            }
-        });
+        if (!complaint.isResolved()) {
+            fab_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Comments.this, AddYourComment.class);
+                    intent.putExtra("cardData", complaint);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            fab_comment.setVisibility(View.GONE);
+        }
+
 
         //lite
         int MY_SOCKET_TIMEOUT_MS = 5000;

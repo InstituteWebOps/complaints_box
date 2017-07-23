@@ -5,15 +5,15 @@
     tools:context="com.example.harisanker.hostelcomplaints.LatestThreadFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_latest_thread"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_latest_thread">
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/general_complaint_recycler"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/latest_thread_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </FrameLayout>
