@@ -110,12 +110,15 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                                 case 1:
                                     int currentUpvote = Integer.parseInt(tv_upvote.getText().toString());
                                     tv_upvote.setText("" + (currentUpvote + 1));
+                                    increaseUpvotes();
                                     break;
                                 case 0:
                                     Toast.makeText(activity, "only 1 upvote allowed per person", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
+
+
 
                     }, new Response.ErrorListener() {
                         @Override
@@ -138,6 +141,11 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     };
                     MySingleton.getInstance(activity).addToRequestQueue(request);
                 }
+
+                private void increaseUpvotes() {
+                    int upvote_no = complaint.getUpvotes();
+                    complaint.setUpvotes(upvote_no+1);
+                }
             });
 
             bn_downvote.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +160,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                                 case 1:
                                     int currentDownvote = Integer.parseInt(tv_downvote.getText().toString());
                                     tv_downvote.setText("" + (currentDownvote + 1));
+                                    increaseDownvotes();
                                     break;
                                 case 0:
                                     Toast.makeText(activity, "only 1 downvote allowed per person", Toast.LENGTH_SHORT).show();
@@ -180,6 +189,11 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
 
                     };
                     MySingleton.getInstance(activity).addToRequestQueue(request);
+                }
+
+                private void increaseDownvotes() {
+                    int downvote_no =complaint.getDownvotes();
+                    complaint.setDownvotes(downvote_no+1);
                 }
             });
         }

@@ -1,6 +1,8 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -117,20 +119,16 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
     public void onRefresh() {
 
         //code here to load new data and setRefreshing to false
-        //Below is only sample code
-        new Thread(){
+        swipeLayout.setRefreshing(true);
+
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SystemClock.sleep(2000); //Refreshing is seen for 2 seconds
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
-                    }
-                });
+                Intent intent = getActivity().getIntent();
+                getActivity().finish();
+                startActivity(intent);
+                swipeLayout.setRefreshing(false);
             }
-        }.start();
-        
+        }, 3000);
     }
 }
