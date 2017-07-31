@@ -20,6 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +44,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
         activity = a;
         context = c;
         sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+
     }
 
     @Override
@@ -54,7 +58,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 //        holder.mTextView.setText(mDataset[position]);
         TextView tv_name = (TextView) holder.view.findViewById(R.id.tv_name);
         TextView tv_hostel = (TextView) holder.view.findViewById(R.id.tv_hostel);
@@ -106,19 +110,21 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            switch (mstatus) {
-                                case 1:
-                                    int currentUpvote = Integer.parseInt(tv_upvote.getText().toString());
-                                    tv_upvote.setText("" + (currentUpvote + 1));
+
+                            try {
+                                JSONObject jsObject = new JSONObject(response);
+                                String status = jsObject.getString("status");
+                                if (status =="1"){
                                     increaseUpvotes();
-                                    break;
-                                case 0:
-                                    Toast.makeText(activity, "only 1 upvote allowed per person", Toast.LENGTH_SHORT).show();
-                                    break;
+                                    notifyItemChanged(position);
+                                }else {
+                                    Toast.makeText(activity, jsObject.getString("error"), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
-
-
 
                     }, new Response.ErrorListener() {
                         @Override
@@ -156,15 +162,18 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                     StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            switch (mstatus) {
-                                case 1:
-                                    int currentDownvote = Integer.parseInt(tv_downvote.getText().toString());
-                                    tv_downvote.setText("" + (currentDownvote + 1));
+                            try {
+                                JSONObject jsObject = new JSONObject(response);
+                                String status = jsObject.getString("status");
+                                if (status =="1"){
                                     increaseDownvotes();
-                                    break;
-                                case 0:
-                                    Toast.makeText(activity, "only 1 downvote allowed per person", Toast.LENGTH_SHORT).show();
-                                    break;
+                                    notifyItemChanged(position);
+                                }else {
+                                    Toast.makeText(activity, jsObject.getString("error"), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
 
@@ -182,7 +191,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.View
                             //put some dummy for now
                             params.put("HOSTEL", "narmada");
                             params.put("UUID", mUUID);
-                            params.put("VOTE", "1");
+                            params.put("VOTE", "0");
                             params.put("ROLL_NO", "ae11d001");
                             return params;
                         }

@@ -60,6 +60,7 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
         return view;
     }
 
+
     public void getAllComplaints(){
 
 
@@ -78,6 +79,8 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mAdapter = new ComplaintAdapter(complaintArray, getActivity(),getContext());
                 mRecyclerView.setAdapter(mAdapter);
+               // mAdapter.notifyDataSetChanged();
+
 
 
             }

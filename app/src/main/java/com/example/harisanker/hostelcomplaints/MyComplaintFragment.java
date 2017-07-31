@@ -1,6 +1,8 @@
 package com.example.harisanker.hostelcomplaints;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +33,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
     private final String hostel = "narmada";
     private final String KEY_HOSTEL = "HOSTEL";
     SwipeRefreshLayout swipeLayout;
+
     List<Complaint> complaintList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -66,13 +71,13 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
-                //JSONComplaintParser dataParser = new JSONComplaintParser(response,getContext());
+               //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
+                Log.d("tag",response);
+               JSONComplaintParser jsonComplaintParser = new JSONComplaintParser(response,getActivity());
 
-                /*
                 ArrayList<Complaint> complaintArray = null;
                 try {
-                    complaintArray = dataParser.pleasePleaseParseMyData();
+                    complaintArray = jsonComplaintParser.pleasePleaseParseMyData();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), "IOException", Toast.LENGTH_SHORT).show();
@@ -80,7 +85,7 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mAdapter = new ComplaintAdapter(complaintArray, getActivity(),getContext());
                 mRecyclerView.setAdapter(mAdapter);
-                */
+
 
             }
         }, new Response.ErrorListener() {
@@ -93,6 +98,9 @@ public class MyComplaintFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
+                //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                //String hostel_name = sharedPref.getString("hostel", "Narmada");
+                //sharedPref.getString("rollno","me15b123")
                 params.put(KEY_HOSTEL,hostel);
                 //todo
                 params.put("ROLL_NO","me15b123");

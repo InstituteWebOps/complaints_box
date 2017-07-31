@@ -188,7 +188,10 @@ import java.util.UUID;
                             JSONObject jsObject = new JSONObject(response);
                             String status = jsObject.getString("status");
                             if (status.equals("1")) {
-                                finish();
+                                //finish();
+                                Intent intent=new Intent(NewComplaintActivity.this,MainActivity.class);
+                                startActivity(intent);
+
                             } else if (status.equals("0")) {
                                 Toast.makeText(NewComplaintActivity.this, "Error", Toast.LENGTH_SHORT).show();
                             }
@@ -232,6 +235,7 @@ import java.util.UUID;
                     }
                 };
                 MySingleton.getInstance(NewComplaintActivity.this).addToRequestQueue(stringRequest);
+
             }
         });
 

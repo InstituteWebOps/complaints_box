@@ -94,7 +94,7 @@ public class JSONComplaintParser {
                 complaint.setTag(reader.nextString());
             } else if (name.equals("comments")) {
                 complaint.setComments(Integer.parseInt(reader.nextString()));
-            } else if (name.equals("status")){
+            } else if (name.equals("error")){
                 reader.nextString();
                 reader.endObject();
                 return Complaint.getErrorComplaintObject();

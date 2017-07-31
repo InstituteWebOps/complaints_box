@@ -85,8 +85,8 @@ public class AddYourComment extends AppCompatActivity {
                         String room = sharedPref.getString("roomno","");
                         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-                        params.put("hostel",hostel_name);
-                        params.put("name",NAME);
+                        params.put("HOSTEL",hostel_name);
+                        params.put("NAME",NAME);
                         params.put("rollno",roll_no);
                         params.put("roomno",room);
                         params.put("comment",cmntDescStr);
