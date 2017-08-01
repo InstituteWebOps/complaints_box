@@ -16,6 +16,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +39,7 @@ public class AddYourComment extends AppCompatActivity {
         final String NAME = Utils.getprefString(UtilStrings.NAME, this);
 
         Intent i = getIntent();
-        Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
+        final Complaint complaint = (Complaint)i.getSerializableExtra("cardData");
 
         TextView name = (TextView)findViewById(R.id.comment_tv_name);
         TextView hostel = (TextView)findViewById(R.id.comment_tv_hostel);
@@ -64,13 +67,28 @@ public class AddYourComment extends AppCompatActivity {
             public void onClick(View view) {
                 final String cmntDescStr = CmntDesc.getText().toString();
                 //write code here to send the comment description to the database, increase the number of comments in database by 1
-                final String mUUID= UUID.randomUUID().toString();
+                final String mUUID= complaint.getUid();
 
 
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(AddYourComment.this, "sending comment...", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsObject = new JSONObject(response);
+                            String status = jsObject.getString("status");
+                            if (status.equals("1")) {
+                                //finish();
+                                Intent intent=new Intent(AddYourComment.this,Comments.class);
+                                startActivity(intent);
+
+                            } else if (status.equals("0")) {
+                                Toast.makeText(AddYourComment.this, "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -81,17 +99,17 @@ public class AddYourComment extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<>();
-                        String hostel_name = sharedPref.getString("hostel","");
-                        String room = sharedPref.getString("roomno","");
+                        String hostel_name = sharedPref.getString("hostel","narmada");
+                        String room = sharedPref.getString("roomno","1004");
                         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
                         params.put("HOSTEL",hostel_name);
-                        params.put("NAME",NAME);
-                        params.put("rollno",roll_no);
-                        params.put("roomno",room);
-                        params.put("comment",cmntDescStr);
-                        params.put("uuid",mUUID);
-                        params.put("datetime",date);
+                        params.put("NAME","Omkar Patil");
+                        params.put("ROLL_NO","me15b123");
+                        params.put("ROOM_NO",room);
+                        params.put("COMMENT",cmntDescStr);
+                        params.put("UUID",mUUID);
+                        params.put("DATETIME",date);
                         return params;
                     }
                 };
