@@ -74,12 +74,15 @@ public class CmntDataParser {
                 commentObj.setCommentStr(reader.nextString());
             }  else if (name.equals("datetime")) {
                 commentObj.setDate(reader.nextString());
-            } else if (name.equals("status")){
+            } else if (name.equals("error")){
+                reader.nextString();
+            }else if (name.equals("status")){
                 reader.nextString();
                 reader.endObject();
                 return CommentObj.getErrorCommentObject();
 
-            } else {
+            }
+            else  {
                 reader.skipValue();
             }
         }

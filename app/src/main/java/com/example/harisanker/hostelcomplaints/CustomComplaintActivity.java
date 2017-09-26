@@ -1,6 +1,7 @@
 package com.example.harisanker.hostelcomplaints;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -90,7 +91,9 @@ public class CustomComplaintActivity extends AppCompatActivity {
                             JSONObject jsObject = new JSONObject(response);
                             String status = jsObject.getString("status");
                             if (status.equals("1")) {
-                                finish();
+                               // finish();
+                                Intent intent=new Intent(CustomComplaintActivity.this,MainActivity.class);
+                                startActivity(intent);
                             } else if (status.equals("0")) {
                                 Toast.makeText(CustomComplaintActivity.this, "Error", Toast.LENGTH_SHORT).show();
                             }
