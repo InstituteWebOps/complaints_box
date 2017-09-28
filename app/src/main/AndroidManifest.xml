@@ -3,6 +3,7 @@
     package="com.example.harisanker.hostelcomplaints">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewComplaintActivity" />
-        <activity android:name=".CustomComplaintActivity" />
         <activity
             android:name=".Comments"
             android:label="Comments" />

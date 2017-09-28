@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frag_newcomplaint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_complaint"
+                android:id="@+id/textView_new_complaint"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complaint_title"
+                android:id="@+id/textView_complaint_title"
+                android:layout_below="@+id/textView_new_complaint"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="51dp" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_complaint_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView_complaint_title"
+                android:prompt="@string/templates"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complaint_description"
+                android:id="@+id/textView_complaint_description"
+                android:layout_below="@+id/spinner_complaint_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="46dp" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_complaint_description"
+                android:layout_below="@+id/textView_complaint_description"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:prompt="@string/templates"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complaint_proximity"
+                android:id="@+id/textView_complaint_proximity"
+                android:layout_marginTop="48dp"
+                android:layout_below="@+id/spinner_complaint_description"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText_room_number"
+                android:layout_below="@+id/textView_complaint_proximity"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:prompt="@string/room_number"/>
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/editText_room_number"
+                android:layout_alignParentRight="true"
+                android:text="@string/save" />
+
+        </RelativeLayout>
+
+
+
+
+</FrameLayout>
