@@ -10,6 +10,7 @@ public class CommentObj {
     private  String date;
     private String commentStr;
     private  String rollNo;
+    private String error;
 
     public static CommentObj getErrorCommentObject() {
         CommentObj commentObj = new CommentObj();
@@ -53,4 +54,6 @@ public class CommentObj {
 
     public void setCommentStr(String commentStr){ this.commentStr = commentStr;}
 
+    public String getError() {return error;}
+    public void setError(String error){this.error =error;}
 }

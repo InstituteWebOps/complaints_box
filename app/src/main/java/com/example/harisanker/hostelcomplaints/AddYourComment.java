@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,25 +75,37 @@ public class AddYourComment extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(AddYourComment.this, "sending comment...", Toast.LENGTH_SHORT).show();
+
                         try {
                             JSONObject jsObject = new JSONObject(response);
                             String status = jsObject.getString("status");
+                            String error1 = jsObject.getString("error");
+
+                            Toast.makeText(AddYourComment.this, status, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddYourComment.this, error1, Toast.LENGTH_LONG).show();
+
                             if (status.equals("1")) {
                                 //finish();
+
                                 Intent intent=new Intent(AddYourComment.this,Comments.class);
                                 startActivity(intent);
 
                             } else if (status.equals("0")) {
                                 Toast.makeText(AddYourComment.this, "Error", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(AddYourComment.this,Comments.class);
+                                startActivity(intent);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Toast.makeText(AddYourComment.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            Log.d("dtdc",e.toString());
                         }
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(AddYourComment.this, (CharSequence) error, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -109,7 +122,7 @@ public class AddYourComment extends AppCompatActivity {
                         params.put("ROOM_NO",room);
                         params.put("COMMENT",cmntDescStr);
                         params.put("UUID",mUUID);
-                        params.put("DATETIME",date);
+                        params.put("DATE_TIME",date);
                         return params;
                     }
                 };
