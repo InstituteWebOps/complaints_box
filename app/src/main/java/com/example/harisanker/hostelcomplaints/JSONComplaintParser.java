@@ -3,6 +3,7 @@ package com.example.harisanker.hostelcomplaints;
 import android.app.Activity;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by DELL on 7/7/2017.
@@ -94,6 +96,9 @@ public class JSONComplaintParser {
                 complaint.setTag(reader.nextString());
             } else if (name.equals("comments")) {
                 complaint.setComments(Integer.parseInt(reader.nextString()));
+            } else if(name.equalsIgnoreCase("imageUrl")){
+//                Log.i("ImageUrl",reader.nextString());
+                complaint.setImageUrl(reader.nextString());
             } else if (name.equals("error")){
                 reader.nextString();
                 reader.endObject();

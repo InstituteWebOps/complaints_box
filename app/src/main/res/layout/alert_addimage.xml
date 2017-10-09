@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:padding="16dp"
     android:layout_centerVertical="true"
     android:layout_centerHorizontal="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <ImageButton
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ibt_gallery"
-            android:background="@drawable/ic_folder_black_24dp"/>
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_collections_black_24dp"
+            app:backgroundTint="#7E57C2"
+            app:fabSize="auto"/>
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ibt_camera"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/ic_camera_enhance_black_24dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_a_photo_black_24dp"
             android:layout_toRightOf="@+id/ibt_gallery"
+            app:backgroundTint="#FFA726"
+            app:fabSize="auto"
             />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

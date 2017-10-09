@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,8 +138,13 @@ public class CustomComplainFragment extends Fragment {
                 final String description = til_complaint_des.getEditText().getText().toString();
                 final String tags = til_complaint_tag.getEditText().getText().toString();
                 final String mUUID = UUID.randomUUID().toString();
+                String imageUrl = "";
+                if(imageUrls.size()!=0){
+                     imageUrl = imageUrls.get(0);
+                }
+                Log.e("WFVEVEESFCS",imageUrl);
 
-
+                final String finalImageUrl = imageUrl;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -153,8 +159,6 @@ public class CustomComplainFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -185,6 +189,7 @@ public class CustomComplainFragment extends Fragment {
                         params.put("TAGS", tags);
                         params.put("DATETIME", date);
                         params.put("COMMENTS", "0");
+                        params.put("IMAGEURL", finalImageUrl);
                         return params;
                     }
                 };
@@ -201,8 +206,8 @@ public class CustomComplainFragment extends Fragment {
                 final AlertDialog addImage = new AlertDialog.Builder(getActivity()).create();
                 LayoutInflater factory = LayoutInflater.from(getActivity());
                 final View view = factory.inflate(R.layout.alert_addimage, null);
-                ImageButton ibt_camera = (ImageButton)view.findViewById(R.id.ibt_camera);
-                ImageButton ibt_gallery = (ImageButton) view.findViewById(R.id.ibt_gallery);
+                FloatingActionButton ibt_camera = (FloatingActionButton) view.findViewById(R.id.ibt_camera);
+                FloatingActionButton ibt_gallery = (FloatingActionButton) view.findViewById(R.id.ibt_gallery);
 
                 addImage.setView(view);
                 addImage.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -211,6 +216,7 @@ public class CustomComplainFragment extends Fragment {
                         addImage.dismiss();
                     }
                 });
+
                 addImage.show();
 
                 ibt_camera.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +224,7 @@ public class CustomComplainFragment extends Fragment {
                     public void onClick(View v) {
                         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(takePicture, 0);
+                        addImage.dismiss();
                     }
                 });
 
@@ -227,6 +234,7 @@ public class CustomComplainFragment extends Fragment {
                         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(pickPhoto , 1);
+                        addImage.dismiss();
                     }
                 });
 
@@ -242,14 +250,15 @@ public class CustomComplainFragment extends Fragment {
             case 0:
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = imageReturnedIntent.getData();
+                    Log.i("YYYYYY",selectedImage.toString());
                     imageUrls.add(selectedImage.toString());
 //                    imageview.setImageURI(selectedImage);
                 }
-
                 break;
             case 1:
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = imageReturnedIntent.getData();
+                    Log.i("XXXXX",selectedImage.toString());
                     imageUrls.add(selectedImage.toString());
 //                    imageview.setImageURI(selectedImage);
                 }

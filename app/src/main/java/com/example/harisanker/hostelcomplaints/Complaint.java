@@ -21,6 +21,7 @@ public class Complaint implements Serializable{
     private String uid;
     private int comments;
     private String hostel;
+    private String imageUrl = "";
 
     public static Complaint getErrorComplaintObject() {
         Complaint complaint = new Complaint();
@@ -143,5 +144,13 @@ public class Complaint implements Serializable{
 
     private void setHostel(String hostel) {
         this.hostel = hostel;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
