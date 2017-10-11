@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibt_gallery"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_collections_black_24dp"
+            app:backgroundTint="#7E57C2"
+            app:fabSize="auto"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibt_camera"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_a_photo_black_24dp"
+            android:layout_toRightOf="@+id/ibt_gallery"
+            app:backgroundTint="#FFA726"
+            app:fabSize="auto"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -81,8 +81,6 @@ public class LatestThreadFragment extends Fragment implements SwipeRefreshLayout
                 mRecyclerView.setAdapter(mAdapter);
                // mAdapter.notifyDataSetChanged();
 
-
-
             }
         }, new Response.ErrorListener() {
             @Override
